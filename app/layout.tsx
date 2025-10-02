@@ -1,13 +1,16 @@
 import 'react';
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Roboto } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const roboto = Roboto({
+  subsets: ["latin"],
+  weight: ['300', '400', '500', '700'] 
+});
 
 export const metadata: Metadata = {
-  title: "PlanBudowlany - Zarządzaj budową jak profesjonalista",
-  description: "Proste narzędzie, które gromadzi wszystkie zadania, plany, kosztorysy i komunikację w jednym, uporządkowanym miejscu.",
+  title: "PlanBudowlany - Zarządzaj budową, a nie chaosem",
+  description: "Proste narzędzie do zarządzania zadaniami, planami i komunikacją na budowie.",
 };
 
 export default function RootLayout({
@@ -16,8 +19,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pl">
-      <body className={inter.className}>{children}</body>
+    <html lang="pl" suppressHydrationWarning>
+      <body className={roboto.className}>{children}</body>
     </html>
   );
 }
