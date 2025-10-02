@@ -1,9 +1,63 @@
 "use client";
 
-import 'react';
 import { useState } from 'react';
+import { motion, Variants } from 'framer-motion';
 import { addToMailingList } from '../lib/mailingListService';
+import Logo from './components/Logo';
 import Image from 'next/image';
+
+// Animation definitions for Framer Motion
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      type: "spring",
+      stiffness: 100,
+    },
+  },
+};
+
+const cardHover = {
+  scale: 1.05,
+  boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.1)",
+  transition: { duration: 0.3 },
+};
+
+// Feature card data
+const features = [
+  {
+    name: 'Planowanie i harmonogramowanie',
+    description: 'Twórz szczegółowe harmonogramy, przypisuj zadania i śledź postępy w czasie rzeczywistym.',
+    icon: '/Plan.png',
+  },
+  {
+    name: 'Zarządzanie materiałami (BoM)',
+    description: 'Automatycznie generuj listy materiałów, zarządzaj zamówieniami i kontroluj koszty.',
+    icon: '/BoM.png',
+  },
+  {
+    name: 'Komunikacja w zespole',
+    description: 'Wbudowany czat i system powiadomień, aby wszyscy byli na bieżąco.',
+    icon: '/Chats.png',
+  },
+  {
+    name: 'Chmura na pliki',
+    description: 'Przechowuj i udostępniaj wszystkie swoje pliki projektowe w jednym, bezpiecznym miejscu.',
+    icon: '/Cloud.png'
+  }
+];
 
 export default function LandingPage() {
     const [name, setName] = useState('');
@@ -31,159 +85,165 @@ export default function LandingPage() {
     };
 
     return (
-        <div className="bg-white">
+        <div className="min-h-screen text-gray-800 overflow-x-hidden bg-white">
             {/* Header */}
-            <header className="sticky top-0 z-50 w-full bg-white shadow-sm">
-                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.header 
+                className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm shadow-sm"
+                initial={{ y: -100 }}
+                animate={{ y: 0 }}
+                transition={{ duration: 0.5 }}
+            >
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-20">
-                        {/* Logo */}
-                        <a href="#" className="flex items-center space-x-2">
-                            <Image src="/file.svg" alt="PlanBudowlany Logo" width={40} height={40} />
-                            <span className="text-2xl font-bold text-gray-800">PlanBudowlany</span>
+                        <a href="#" className="flex items-center h-full">
+                            <Logo />
                         </a>
-                        
-                        {/* Desktop Navigation */}
-                        <nav className="hidden md:flex space-x-8">
-                            <a href="#features" className="text-gray-600 hover:text-indigo-600">Funkcje</a>
-                            <a href="#zapisz-sie" className="text-gray-600 hover:text-indigo-600">Zapisz się</a>
-                        </nav>
-
-                        <div className="flex items-center">
-                            <a href="#zapisz-sie" className="bg-indigo-600 text-white font-semibold px-5 py-2 rounded-lg hover:bg-indigo-700 transition-colors">
-                                Otrzymaj Dostęp
-                            </a>
-                        </div>
+                        <a href="#zapisz-sie" className="bg-indigo-600 text-white font-semibold px-5 py-2 rounded-lg hover:bg-indigo-700 transition-colors duration-300">
+                            Otrzymaj Dostęp
+                        </a>
                     </div>
                 </div>
-            </header>
+            </motion.header>
 
             {/* Main Content */}
-            <main>
+            <main className="pt-20">
                 {/* Hero Section */}
-                <section className="relative hero-gradient pt-24 pb-20 sm:pt-32 sm:pb-24">
-                    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                        <p className="text-indigo-600 font-semibold">JUŻ WKRÓTCE</p>
-                        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 mt-4 leading-tight">
+                <section 
+                    className="relative flex items-center justify-center h-[calc(100vh-80px)]"
+                >
+                    <div className="absolute inset-0 opacity-10" style={{
+                        backgroundImage: `url('/background.png')`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center center',
+                    }}></div>
+                    <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                        <motion.div variants={itemVariants} initial="hidden" animate="visible">
+                            <p className="font-semibold text-indigo-600 tracking-wider mb-4">JUŻ WKRÓTCE</p>
+                        </motion.div>
+                        <motion.h1 
+                            className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl"
+                            variants={itemVariants}
+                            initial="hidden"
+                            animate="visible"
+                        >
                             Zarządzaj budową, a nie chaosem.
-                        </h1>
-                        <div className="mt-6 max-w-2xl mx-auto text-lg text-gray-600">
+                        </motion.h1>
+                        <motion.p 
+                            className="mt-6 max-w-3xl mx-auto text-lg text-gray-600"
+                            variants={itemVariants}
+                            initial="hidden"
+                            animate="visible"
+                        >
                             PlanBudowlany to proste narzędzie, które gromadzi wszystkie zadania, plany, kosztorysy i komunikację w jednym, uporządkowanym miejscu. Koniec z setkami maili i nieporozumień.
-                        </div>
-                        <div className="mt-10">
-                            <a href="#features" className="bg-indigo-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-indigo-700 transition-colors text-lg">
+                        </motion.p>
+                        <motion.div 
+                            className="mt-10"
+                            variants={itemVariants}
+                            initial="hidden"
+                            animate="visible"
+                        >
+                            <a href="#features" className="bg-indigo-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-indigo-700 transition-colors duration-300 text-lg shadow-lg hover:shadow-xl">
                                 Dowiedz się więcej
                             </a>
-                        </div>
+                        </motion.div>
                     </div>
                 </section>
 
                 {/* Features Section */}
-                <section id="features" className="py-20 bg-white">
-                    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="text-center">
-                            <h2 className="text-3xl font-bold text-gray-900">Wszystko, czego potrzebujesz, w jednym miejscu</h2>
+                <motion.section 
+                    id="features" 
+                    className="py-20 bg-gray-50"
+                    variants={containerVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.2 }}
+                >
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="text-center mb-16">
+                            <h2 className="text-4xl font-bold text-gray-900">Wszystko, czego potrzebujesz, w jednym miejscu</h2>
                             <p className="mt-4 text-lg text-gray-600">Od planowania, przez komunikację, aż po raportowanie.</p>
                         </div>
-                        <div className="mt-16 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-                            {/* Feature 1 */}
-                            <div className="text-center">
-                                <div className="flex items-center justify-center h-12 w-12 rounded-md bg-indigo-100 text-indigo-600 mx-auto">
-                                    <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" /></svg>
-                                </div>
-                                <h3 className="mt-5 text-lg font-semibold text-gray-900">Inteligentne Zadania</h3>
-                                <p className="mt-2 text-base text-gray-600">Twórz listy zadań, przypisuj osoby i śledź postępy w czasie rzeczywistym. Koniec z zapomnianymi terminami.</p>
-                            </div>
-                            {/* Feature 2 */}
-                            <div className="text-center">
-                                <div className="flex items-center justify-center h-12 w-12 rounded-md bg-indigo-100 text-indigo-600 mx-auto">
-                                    <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
-                                </div>
-                                <h3 className="mt-5 text-lg font-semibold text-gray-900">Spójna Komunikacja</h3>
-                                <p className="mt-2 text-base text-gray-600">Dedykowane kanały czatu dla każdego projektu. Wszystkie ustalenia i decyzje w jednym, łatwym do znalezienia miejscu.</p>
-                            </div>
-                            {/* Feature 3 */}
-                            <div className="text-center">
-                                <div className="flex items-center justify-center h-12 w-12 rounded-md bg-indigo-100 text-indigo-600 mx-auto">
-                                    <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
-                                </div>
-                                <h3 className="mt-5 text-lg font-semibold text-gray-900">Kontrola nad Kosztami</h3>
-                                <p className="mt-2 text-base text-gray-600">Importuj i zarządzaj kosztorysami. Oznaczaj pozycje jako kupione i miej pełny wgląd w finanse projektu.</p>
-                            </div>
-                            {/* Feature 4 */}
-                            <div className="text-center">
-                                <div className="flex items-center justify-center h-12 w-12 rounded-md bg-indigo-100 text-indigo-600 mx-auto">
-                                    <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" /></svg>
-                                </div>
-                                <h3 className="mt-5 text-lg font-semibold text-gray-900">Dostęp do Dokumentów</h3>
-                                <p className="mt-2 text-base text-gray-600">Integracja z Google Drive pozwala na łatwy dostęp do wszystkich projektów, umów i planów dla całego zespołu.</p>
-                            </div>
+                        <div className="grid gap-8 sm:grid-cols-1 md:grid-cols-2">
+                            {features.map((feature, index) => (
+                                <motion.div
+                                    key={index}
+                                    className="relative rounded-2xl shadow-lg overflow-hidden flex flex-col justify-end text-center p-8 min-h-[384px] text-white"
+                                    variants={itemVariants}
+                                    whileHover={cardHover}
+                                >
+                                    <Image
+                                        src={feature.icon}
+                                        alt={feature.name}
+                                        layout="fill"
+                                        className="object-cover z-0"
+                                    />
+                                    <div className="absolute inset-0 bg-black/50 z-10"></div>
+                                    <div className="relative z-20">
+                                        <h3 className="text-2xl font-bold mb-3">{feature.name}</h3>
+                                        <p className="text-gray-200 text-lg">{feature.description}</p>
+                                    </div>
+                                </motion.div>
+                            ))}
                         </div>
                     </div>
-                </section>
+                </motion.section>
 
-                {/* CTA Section */}
-                <section id="zapisz-sie" className="bg-gray-50 py-20">
-                    <div className="max-w-xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                        <h2 className="text-3xl font-bold text-gray-900">Bądź na bieżąco!</h2>
-                        <p className="mt-4 text-lg text-gray-600">
-                            Zapisz się na listę oczekujących, a poinformujemy Cię jako pierwszego i damy specjalną ofertę na start!
-                        </p>
-                        <div className="mt-10">
-                            {message && (
-                                <div className="rounded-md bg-green-50 p-4 mb-4">
-                                    <p className="text-sm font-medium text-green-800">{message}</p>
+                {/* Mailing List Section */}
+                <motion.section 
+                    id="zapisz-sie" 
+                    className="py-20"
+                    variants={containerVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.3 }}
+                >
+                    <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <motion.div className="bg-white rounded-2xl p-8 md:p-12 border border-gray-200 shadow-lg" variants={itemVariants}>
+                            <h2 className="text-3xl font-bold text-center mb-4 text-gray-900">Bądź na bieżąco!</h2>
+                            <p className="text-center text-gray-600 mb-8">Zapisz się, aby otrzymać wczesny dostęp i informacje o rozwoju aplikacji.</p>
+                            <form onSubmit={handleSubmit} className="space-y-6">
+                                <div>
+                                    <label htmlFor="name" className="sr-only">Imię</label>
+                                    <input
+                                        type="text"
+                                        id="name"
+                                        placeholder="Twoje imię"
+                                        value={name}
+                                        onChange={(e) => setName(e.target.value)}
+                                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
+                                        required
+                                    />
                                 </div>
-                            )}
-                            {error && (
-                                <div className="rounded-md bg-red-50 p-4 mb-4">
-                                    <p className="text-sm font-medium text-red-800">{error}</p>
+                                <div>
+                                    <label htmlFor="email" className="sr-only">Email</label>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        placeholder="Twój adres e-mail"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
+                                        required
+                                    />
                                 </div>
-                            )}
-                            {!message && (
-                                <form onSubmit={handleSubmit} className="space-y-4">
-                                    <div className="w-full">
-                                        <label htmlFor="name-cta" className="sr-only">Imię</label>
-                                        <input
-                                            type="text"
-                                            name="name"
-                                            id="name-cta"
-                                            autoComplete="name"
-                                            required
-                                            value={name}
-                                            onChange={(e) => setName(e.target.value)}
-                                            className="block w-full px-5 py-3 text-base text-gray-900 placeholder-gray-500 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                                            placeholder="Wpisz swoje imię"
-                                        />
-                                    </div>
-                                    <div className="w-full">
-                                        <label htmlFor="email-address-cta" className="sr-only">Adres email</label>
-                                        <input
-                                            type="email"
-                                            name="email-address"
-                                            id="email-address-cta"
-                                            autoComplete="email"
-                                            required
-                                            value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
-                                            className="block w-full px-5 py-3 text-base text-gray-900 placeholder-gray-500 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                                            placeholder="Wpisz swój adres e-mail"
-                                        />
-                                    </div>
-                                    <div>
-                                        <button type="submit" className="w-full bg-indigo-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-indigo-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Powiadom mnie</button>
-                                    </div>
-                                </form>
-                            )}
-                        </div>
+                                <button
+                                    type="submit"
+                                    className="w-full bg-indigo-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-indigo-700 transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                >
+                                    Zapisz mnie!
+                                </button>
+                            </form>
+                            {message && <p className="mt-4 text-center text-green-600">{message}</p>}
+                            {error && <p className="mt-4 text-center text-red-600">{error}</p>}
+                        </motion.div>
                     </div>
-                </section>
-
+                </motion.section>
             </main>
 
             {/* Footer */}
-            <footer className="bg-gray-800">
-                <div className="max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:px-8 text-center">
-                    <p className="text-base text-gray-400">&copy; 2025 PlanBudowlany. Wszelkie prawa zastrzeżone.</p>
+            <footer className="bg-gray-100">
+                <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center">
+                    <p className="text-gray-500">&copy; {new Date().getFullYear()} PlanerBudowlany. Wszelkie prawa zastrzeżone.</p>
                 </div>
             </footer>
         </div>
