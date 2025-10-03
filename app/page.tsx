@@ -5,6 +5,7 @@ import { motion, Variants } from 'framer-motion';
 import { addToMailingList } from '../lib/mailingListService';
 import Logo from './components/Logo';
 import Image from 'next/image';
+import { logCtaClick, logFormSuccess, logLinkClick } from '../lib/analytics';
 
 // Animation definitions for Framer Motion
 const containerVariants: Variants = {
@@ -82,6 +83,7 @@ export default function LandingPage() {
         try {
             await addToMailingList(email, name);
             setMessage('Dziękujemy! Zostałeś zapisany na listę.');
+            logFormSuccess(); // Log analytics event
             setEmail('');
             setName('');
             setConsent(false);
@@ -105,8 +107,8 @@ export default function LandingPage() {
                             <Logo />
                         </a>
                         <div className="flex items-center gap-4">
-                          <a href="/demo" className="font-semibold text-gray-600 hover:text-indigo-600 transition-colors">Demo</a>
-                          <a href="#zapisz-sie" className="bg-indigo-600 text-white font-semibold px-5 py-2 rounded-lg hover:bg-indigo-700 transition-colors duration-300">
+                          <a href="/demo" onClick={() => logCtaClick('header_demo')} className="font-semibold text-gray-600 hover:text-indigo-600 transition-colors">Demo</a>
+                          <a href="#zapisz-sie" onClick={() => logCtaClick('header_get_access')} className="bg-indigo-600 text-white font-semibold px-5 py-2 rounded-lg hover:bg-indigo-700 transition-colors duration-300">
                               Otrzymaj Dostęp
                           </a>
                         </div>
@@ -151,7 +153,7 @@ export default function LandingPage() {
                             initial="hidden"
                             animate="visible"
                         >
-                            <a href="#features" className="bg-indigo-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-indigo-700 transition-colors duration-300 text-lg shadow-lg hover:shadow-xl">
+                            <a href="#features" onClick={() => logCtaClick('hero_learn_more')} className="bg-indigo-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-indigo-700 transition-colors duration-300 text-lg shadow-lg hover:shadow-xl">
                                 Dowiedz się więcej
                             </a>
                         </motion.div>
@@ -210,7 +212,7 @@ export default function LandingPage() {
                             initial="hidden"
                             animate="visible"
                         >
-                            <a href="/demo" className="bg-indigo-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-indigo-700 transition-colors duration-300 text-lg shadow-lg hover:shadow-xl">
+                            <a href="/demo" onClick={() => logCtaClick('cta_see_demo')} className="bg-indigo-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-indigo-700 transition-colors duration-300 text-lg shadow-lg hover:shadow-xl">
                                 Zobacz Demo
                             </a>
                         </motion.div>
@@ -397,7 +399,7 @@ export default function LandingPage() {
                 <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 text-center">
                     <p className="text-gray-500">&copy; {new Date().getFullYear()} PlanerBudowlany. Wszelkie prawa zastrzeżone.</p>
                     <p className="text-sm text-gray-400 mt-2">
-                        Projekt stworzony przez <a href="https://lifelike.cloud/" target="_blank" rel="noopener noreferrer" className="hover:text-indigo-600 transition-colors">Lifelike</a>
+                        Projekt stworzony przez <a href="https://lifelike.cloud/" onClick={() => logLinkClick('https://lifelike.cloud/')} target="_blank" rel="noopener noreferrer" className="hover:text-indigo-600 transition-colors">Lifelike</a>
                     </p>
                 </div>
             </footer>
