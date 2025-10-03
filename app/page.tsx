@@ -269,7 +269,7 @@ export default function LandingPage() {
                             </motion.div>
                             <motion.div variants={itemVariants}>
                                 <h3 className="text-xl font-bold mb-2 text-gray-900">WhatsApp</h3>
-                                <p className="text-base text-gray-600">Komunikuj się z wykonawcami tak, jak lubią – bezpośrednio przez WhatsApp, a wszystko i tak zapisze się w aplikacji.</p>
+                                <p className="text-base text-gray-600">Dwukierunkowa komunikacja z wykonawcami tak, jak lubią – bezpośrednio przez WhatsApp. Wszystkie wiadomości, wysłane i odebrane, zapiszą się w aplikacji.</p>
                             </motion.div>
                         </div>
                     </div>
