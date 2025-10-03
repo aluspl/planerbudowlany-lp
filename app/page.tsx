@@ -328,36 +328,36 @@ export default function LandingPage() {
                         Od harmonogramów Gantta po tablice Kanban – miej wszystko pod kontrolą.
                       </p>
                     </div>
-                    <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center max-w-6xl mx-auto">
+                    <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center max-w-6xl mx-auto">
                       {/* Gantt Chart Mockup */}
                       <motion.div variants={itemVariants} className="bg-white p-6 rounded-2xl shadow-lg">
                         <h3 className="font-bold text-lg text-gray-800 mb-4">Przykładowy harmonogram</h3>
-                        <div className="space-y-3">
+                        <div className="space-y-4">
                           {/* Task 1 */}
-                          <div className="flex items-center gap-4">
-                            <p className="w-28 text-sm text-gray-600 shrink-0">Fundamenty</p>
-                            <div className="flex-1 h-7 bg-gray-200 rounded-full">
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                            <p className="sm:w-28 text-sm text-gray-600 shrink-0 font-medium">Fundamenty</p>
+                            <div className="flex-1 h-7 bg-gray-200 rounded-full w-full">
                               <div className="h-7 bg-indigo-500 rounded-full" style={{ width: '40%' }}></div>
                             </div>
                           </div>
                           {/* Task 2 */}
-                          <div className="flex items-center gap-4">
-                            <p className="w-28 text-sm text-gray-600 shrink-0">Struktura</p>
-                            <div className="flex-1 h-7 bg-gray-200 rounded-full">
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                            <p className="sm:w-28 text-sm text-gray-600 shrink-0 font-medium">Struktura</p>
+                            <div className="flex-1 h-7 bg-gray-200 rounded-full w-full">
                               <div className="h-7 bg-indigo-500 rounded-full ml-[20%]" style={{ width: '50%' }}></div>
                             </div>
                           </div>
                           {/* Task 3 */}
-                          <div className="flex items-center gap-4">
-                            <p className="w-28 text-sm text-gray-600 shrink-0">Instalacje</p>
-                            <div className="flex-1 h-7 bg-gray-200 rounded-full">
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                            <p className="sm:w-28 text-sm text-gray-600 shrink-0 font-medium">Instalacje</p>
+                            <div className="flex-1 h-7 bg-gray-200 rounded-full w-full">
                               <div className="h-7 bg-amber-500 rounded-full ml-[45%]" style={{ width: '35%' }}></div>
                             </div>
                           </div>
                            {/* Task 4 */}
-                           <div className="flex items-center gap-4">
-                            <p className="w-28 text-sm text-gray-600 shrink-0">Wykończenia</p>
-                            <div className="flex-1 h-7 bg-gray-200 rounded-full">
+                           <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                            <p className="sm:w-28 text-sm text-gray-600 shrink-0 font-medium">Wykończenia</p>
+                            <div className="flex-1 h-7 bg-gray-200 rounded-full w-full">
                               <div className="h-7 bg-gray-400 rounded-full ml-[70%]" style={{ width: '30%' }}></div>
                             </div>
                           </div>
@@ -367,7 +367,7 @@ export default function LandingPage() {
                       {/* Kanban Board Mockup */}
                       <motion.div variants={itemVariants} className="bg-white p-6 rounded-2xl shadow-lg">
                         <h3 className="font-bold text-lg text-gray-800 mb-4">Przykładowa tablica zadań</h3>
-                        <div className="grid grid-cols-3 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                           {/* Column 1 */}
                           <div>
                             <h4 className="font-semibold text-sm text-gray-500 mb-3 text-center">Do zrobienia</h4>
