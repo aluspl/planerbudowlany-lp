@@ -3,10 +3,11 @@ import Header from './Header';
 
 interface DemoPageLayoutProps {
   title: string;
+  description?: string;
   children: React.ReactNode;
 }
 
-const DemoPageLayout: React.FC<DemoPageLayoutProps> = ({ title, children }) => {
+const DemoPageLayout: React.FC<DemoPageLayoutProps> = ({ title, description, children }) => {
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800">
       <Header />
@@ -21,6 +22,7 @@ const DemoPageLayout: React.FC<DemoPageLayoutProps> = ({ title, children }) => {
           {/* Page Header */}
           <div className="mb-8">
             <h1 className="text-4xl font-bold text-gray-900">{title}</h1>
+            {description && <p className="mt-2 text-lg text-gray-600">{description}</p>}
           </div>
 
           {children}
