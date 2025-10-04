@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { motion, Variants } from 'framer-motion';
 import { addToMailingList } from '../lib/mailingListService';
-import Logo from './components/Logo';
+import Header from './components/Header';
 import Image from 'next/image';
 import { logCtaClick, logFormSuccess, logLinkClick } from '../lib/analytics';
 
@@ -36,8 +36,15 @@ const cardHover = {
   transition: { duration: 0.3 },
 };
 
+interface Feature {
+  name: string;
+  description: string;
+  icon: string;
+  href?: string;
+}
+
 // Feature card data
-const features = [
+const features: Feature[] = [
   {
     name: 'Planowanie i harmonogramowanie',
     description: 'Twórz szczegółowe harmonogramy, przypisuj zadania i śledź postępy w czasie rzeczywistym.',
@@ -54,9 +61,22 @@ const features = [
     icon: '/Chats.png',
   },
   {
-    name: 'Chmura na pliki',
-    description: 'Przechowuj i udostępniaj wszystkie swoje pliki projektowe w jednym, bezpiecznym miejscu.',
-    icon: '/Cloud.png'
+    name: 'Cyfrowy Dziennik Budowy',
+    description: 'Prowadź oficjalny zapis prac z autom. danymi pogodowymi i eksportem do PDF.',
+    icon: '/file.svg',
+    href: '/dziennik-budowy'
+  },
+  {
+    name: 'Pełna Kontrola nad Budżetem',
+    description: 'Śledź koszty rzeczywiste vs. planowane, dołączaj faktury i wizualizuj wydatki.',
+    icon: '/Banner.png',
+    href: '/budzet'
+  },
+  {
+    name: 'Wizualne Zgłaszanie Usterek',
+    description: 'Zgłaszaj usterki "pinezką" na rzucie budynku, automatycznie tworząc zadania dla ekip.',
+    icon: '/window.svg',
+    href: '/usterki'
   }
 ];
 
@@ -94,27 +114,7 @@ export default function LandingPage() {
 
     return (
         <div className="min-h-screen text-gray-800 overflow-x-hidden bg-white">
-            {/* Header */}
-            <motion.header 
-                className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm shadow-sm"
-                initial={{ y: -100 }}
-                animate={{ y: 0 }}
-                transition={{ duration: 0.5 }}
-            >
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex items-center justify-between h-20">
-                        <a href="/" className="flex items-center h-full">
-                            <Logo />
-                        </a>
-                        <div className="flex items-center gap-4">
-                          <a href="/demo" onClick={() => logCtaClick('header_demo')} className="font-semibold text-gray-600 hover:text-indigo-600 transition-colors">Demo</a>
-                          <a href="#zapisz-sie" onClick={() => logCtaClick('header_get_access')} className="bg-indigo-600 text-white font-semibold px-5 py-2 rounded-lg hover:bg-indigo-700 transition-colors duration-300">
-                              Otrzymaj Dostęp
-                          </a>
-                        </div>
-                    </div>
-                </div>
-            </motion.header>
+            <Header />
 
             {/* Main Content */}
             <main className="pt-20">
@@ -171,30 +171,41 @@ export default function LandingPage() {
                 >
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="text-center mb-16">
-                            <h2 className="text-4xl font-bold text-gray-900">Wszystko, czego potrzebujesz, w jednym miejscu</h2>
-                            <p className="mt-4 text-lg text-gray-600">Od planowania, przez komunikację, aż po raportowanie.</p>
+                            <h2 className="text-4xl font-bold text-gray-900">Kompleksowe narzędzie do zarządzania budową</h2>
+                            <p className="mt-4 text-lg text-gray-600">Od harmonogramu i budżetu, przez dziennik budowy, aż po odbiór końcowy.</p>
                         </div>
-                        <div className="grid gap-8 sm:grid-cols-1 md:grid-cols-2">
-                            {features.map((feature, index) => (
-                                <motion.div
-                                    key={index}
-                                    className="relative rounded-2xl shadow-lg overflow-hidden flex flex-col justify-end text-center p-8 min-h-[384px] text-white"
-                                    variants={itemVariants}
-                                    whileHover={cardHover}
-                                >
-                                    <Image
-                                        src={feature.icon}
-                                        alt={feature.name}
-                                        layout="fill"
-                                        className="object-cover z-0"
-                                    />
-                                    <div className="absolute inset-0 bg-black/50 z-10"></div>
-                                    <div className="relative z-20">
-                                        <h3 className="text-2xl font-bold mb-3">{feature.name}</h3>
-                                        <p className="text-gray-200 text-lg">{feature.description}</p>
-                                    </div>
-                                </motion.div>
-                            ))}
+                        <div className="grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                            {features.map((feature, index) => {
+                                const card = (
+                                    <motion.div
+                                        className="relative rounded-2xl shadow-lg overflow-hidden flex flex-col justify-end text-center p-8 min-h-[384px] text-white h-full"
+                                        variants={itemVariants}
+                                        whileHover={cardHover}
+                                    >
+                                        <Image
+                                            src={feature.icon}
+                                            alt={feature.name}
+                                            layout="fill"
+                                            className="object-cover z-0"
+                                        />
+                                        <div className="absolute inset-0 bg-black/50 z-10"></div>
+                                        <div className="relative z-20">
+                                            <h3 className="text-2xl font-bold mb-3">{feature.name}</h3>
+                                            <p className="text-gray-200 text-lg">{feature.description}</p>
+                                        </div>
+                                    </motion.div>
+                                );
+
+                                if (feature.href) {
+                                    return (
+                                        <a href={feature.href} key={index} className="block h-full">
+                                            {card}
+                                        </a>
+                                    );
+                                }
+                                
+                                return <div key={index}>{card}</div>;
+                            })}
                         </div>
                     </div>
                 </motion.section>
