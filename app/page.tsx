@@ -63,7 +63,7 @@ const features: Feature[] = [
   {
     name: 'Cyfrowy Dziennik Budowy',
     description: 'Prowadź oficjalny zapis prac z autom. danymi pogodowymi i eksportem do PDF.',
-    icon: '/file.svg',
+    icon: '/background.png',
     href: '/dziennik-budowy'
   },
   {
@@ -75,7 +75,7 @@ const features: Feature[] = [
   {
     name: 'Wizualne Zgłaszanie Usterek',
     description: 'Zgłaszaj usterki "pinezką" na rzucie budynku, automatycznie tworząc zadania dla ekip.',
-    icon: '/window.svg',
+    icon: '/background.png',
     href: '/usterki'
   }
 ];
@@ -128,16 +128,13 @@ export default function LandingPage() {
                         backgroundPosition: 'center center',
                     }}></div>
                     <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                        <motion.div variants={itemVariants} initial="hidden" animate="visible">
-                            <p className="font-semibold text-indigo-600 tracking-wider mb-4">JUŻ WKRÓTCE</p>
-                        </motion.div>
                         <motion.h1 
                             className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl"
                             variants={itemVariants}
                             initial="hidden"
                             animate="visible"
                         >
-                            Zarządzaj budową, a nie chaosem.
+                            Masz dość chaosu na budowie? Odzyskaj kontrolę.
                         </motion.h1>
                         <motion.p 
                             className="mt-6 max-w-3xl mx-auto text-lg text-gray-600"
@@ -145,7 +142,7 @@ export default function LandingPage() {
                             initial="hidden"
                             animate="visible"
                         >
-                            PlanBudowlany to proste narzędzie, które gromadzi wszystkie zadania, plany, kosztorysy i komunikację w jednym, uporządkowanym miejscu. Koniec z setkami maili i nieporozumień.
+                            PlanBudowlany to Twoje jedno źródło prawdy. Gromadzi wszystkie zadania, plany, koszty i rozmowy w jednym miejscu, dając Ci spokój i pewność na każdym etapie. Koniec z setkami maili i nieporozumień.
                         </motion.p>
                         <motion.div 
                             className="mt-10"
@@ -153,8 +150,8 @@ export default function LandingPage() {
                             initial="hidden"
                             animate="visible"
                         >
-                            <a href="#features" onClick={() => logCtaClick('hero_learn_more')} className="bg-indigo-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-indigo-700 transition-colors duration-300 text-lg shadow-lg hover:shadow-xl">
-                                Dowiedz się więcej
+                            <a href="#zapisz-sie" onClick={() => logCtaClick('hero_learn_more')} className="bg-indigo-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-indigo-700 transition-colors duration-300 text-lg shadow-lg hover:shadow-xl">
+                                Chcę odzyskać spokój
                             </a>
                         </motion.div>
                     </div>
@@ -210,15 +207,12 @@ export default function LandingPage() {
                     </div>
                 </motion.section>
 
-                {/* CTA for Demo Page */}
+                {/* Demo Section */}
                 <section className="py-20">
                     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                        <h2 className="text-4xl font-bold text-gray-900">Chcesz zobaczyć więcej?</h2>
-                        <p className="mt-4 text-lg text-gray-600">
-                            Przygotowaliśmy szczegółowe demo, które pokazuje, jak aplikacja wygląda i działa w praktyce.
-                        </p>
+                        <h2 className="text-4xl font-bold text-gray-900">Zobacz Aplikację w Akcji</h2>
                         <motion.div 
-                            className="mt-10"
+                            className="mt-10 flex justify-center gap-4"
                             variants={itemVariants}
                             initial="hidden"
                             animate="visible"
@@ -226,13 +220,19 @@ export default function LandingPage() {
                             <a href="/demo" onClick={() => logCtaClick('cta_see_demo')} className="bg-indigo-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-indigo-700 transition-colors duration-300 text-lg shadow-lg hover:shadow-xl">
                                 Zobacz Demo
                             </a>
+                            <a href="/dziennik-budowy" onClick={() => logCtaClick('cta_see_dziennik')} className="bg-indigo-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-indigo-700 transition-colors duration-300 text-lg shadow-lg hover:shadow-xl">
+                                Dziennik Budowy
+                            </a>
+                            <a href="/usterki" onClick={() => logCtaClick('cta_see_usterki')} className="bg-indigo-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-indigo-700 transition-colors duration-300 text-lg shadow-lg hover:shadow-xl">
+                                Zgłaszanie Usterek
+                            </a>
                         </motion.div>
                     </div>
                 </section>
 
-                {/* AI Features Section */}
-                <motion.section 
-                    id="ai-features" 
+                {/* tu beda komentarze, po testach mvp
+                <motion.section
+                    id="social-proof"
                     className="py-20 bg-gray-50"
                     variants={containerVariants}
                     initial="hidden"
@@ -241,96 +241,63 @@ export default function LandingPage() {
                 >
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="text-center mb-16">
-                            <h2 className="text-4xl font-bold text-gray-900">Inteligentne Funkcje</h2>
-                            <p className="mt-4 text-lg text-gray-600">Odkryj moc sztucznej inteligencji w zarządzaniu budową.</p>
+                            <h2 className="text-4xl font-bold text-gray-900">Dowody, nie obietnice</h2>
                         </div>
-                        <div className="grid gap-8 md:grid-cols-2 max-w-4xl mx-auto">
+                        <div className="grid gap-8 md:grid-cols-3 max-w-5xl mx-auto">
                             <motion.div className="bg-white p-8 rounded-2xl shadow-md" variants={itemVariants}>
-                                <h3 className="text-xl font-bold mb-2 text-gray-900">Automatyczne Raporty</h3>
-                                <p className="text-base text-gray-600">Oszczędzaj godziny na papierkowej robocie. Nasza AI przygotuje tygodniowe raporty z postępu prac za Ciebie.</p>
+                                <div className="flex items-center mb-4">
+                                    <div className="w-12 h-12 rounded-full bg-gray-300 mr-4"></div>
+                                    <div>
+                                        <p className="font-bold">Jan Kowalski</p>
+                                        <p className="text-sm text-gray-500">Inwestor, budowa domu</p>
+                                    </div>
+                                </div>
+                                <p className="text-base text-gray-600">"Ta aplikacja to ratunek. Wcześniej miałem wszystko w setkach maili i SMS-ów. Teraz mam porządek i wiem, co się dzieje na budowie."</p>
                             </motion.div>
                             <motion.div className="bg-white p-8 rounded-2xl shadow-md" variants={itemVariants}>
-                                <h3 className="text-xl font-bold mb-2 text-gray-900">Inteligentne Dzielenie Zadań</h3>
-                                <p className="text-base text-gray-600">Zamień jedno duże zadanie w gotową checklistę dla Twojej ekipy jednym kliknięciem.</p>
+                                <div className="flex items-center mb-4">
+                                    <div className="w-12 h-12 rounded-full bg-gray-300 mr-4"></div>
+                                    <div>
+                                        <p className="font-bold">Anna Nowak</p>
+                                        <p className="text-sm text-gray-500">Architekt</p>
+                                    </div>
+                                </div>
+                                <p className="text-base text-gray-600">"Genialne narzędzie do komunikacji z klientem i wykonawcami. Wreszcie wszystko jest w jednym miejscu, a ja mam więcej czasu na projektowanie."</p>
+                            </motion.div>
+                            <motion.div className="bg-white p-8 rounded-2xl shadow-md" variants={itemVariants}>
+                                <div className="flex items-center mb-4">
+                                    <div className="w-12 h-12 rounded-full bg-gray-300 mr-4"></div>
+                                    <div>
+                                        <p className="font-bold">Piotr Wiśniewski</p>
+                                        <p className="text-sm text-gray-500">Kierownik budowy</p>
+                                    </div>
+                                </div>
+                                <p className="text-base text-gray-600">"PlanBudowlany oszczędza mi kilka godzin tygodniowo. Zgłaszanie usterek i raportowanie postępów jest teraz banalnie proste."</p>
                             </motion.div>
                         </div>
                     </div>
                 </motion.section>
+                */}
 
-                {/* Integrations Section */}
-                <motion.section 
-                    id="integrations" 
+
+                {/* About Author Section */}
+                <motion.section
+                    id="about-author"
                     className="py-20"
                     variants={containerVariants}
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.2 }}
                 >
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="text-center mb-16">
-                            <h2 className="text-4xl font-bold text-gray-900">Integracje, które ułatwiają życie</h2>
-                            <p className="mt-4 text-lg text-gray-600">Ludzie uwielbiają narzędzia, które współpracują z tym, czego już używają.</p>
-                        </div>
-                        <div className="grid gap-8 md:grid-cols-3 text-center max-w-5xl mx-auto">
-                            <motion.div variants={itemVariants}>
-                                <h3 className="text-xl font-bold mb-2 text-gray-900">Google Drive</h3>
-                                <p className="text-base text-gray-600">Wszystkie Twoje pliki i projekty w jednym miejscu dzięki synchronizacji z Google Drive.</p>
-                            </motion.div>
-                            <motion.div variants={itemVariants}>
-                                <h3 className="text-xl font-bold mb-2 text-gray-900">Google Calendar</h3>
-                                <p className="text-base text-gray-600">Terminy z budowy automatycznie w Twoim kalendarzu.</p>
-                            </motion.div>
-                            <motion.div variants={itemVariants}>
-                                <h3 className="text-xl font-bold mb-2 text-gray-900">WhatsApp</h3>
-                                <p className="text-base text-gray-600">Dwukierunkowa komunikacja z wykonawcami tak, jak lubią – bezpośrednio przez WhatsApp. Wszystkie wiadomości, wysłane i odebrane, zapiszą się w aplikacji.</p>
-                            </motion.div>
-                        </div>
-                    </div>
-                </motion.section>
-
-                {/* Target Audience Section */}
-                <motion.section 
-                    id="target-audience" 
-                    className="py-20 bg-gray-50"
-                    variants={containerVariants}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, amount: 0.2 }}
-                >
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="text-center mb-16">
-                            <h2 className="text-4xl font-bold text-gray-900">Idealne rozwiązanie dla:</h2>
-                        </div>
-                        <div className="grid gap-8 md:grid-cols-3 text-center max-w-5xl mx-auto">
-                            <motion.div className="bg-white p-8 rounded-2xl shadow-md" variants={itemVariants}>
-                                <h3 className="text-xl font-bold mb-2 text-gray-900">Inwestorów</h3>
-                                <p className="text-base text-gray-600">Pełna kontrola nad postępem i finansami, nawet zdalnie.</p>
-                            </motion.div>
-                            <motion.div className="bg-white p-8 rounded-2xl shadow-md" variants={itemVariants}>
-                                <h3 className="text-xl font-bold mb-2 text-gray-900">Wykonawców i Ekip</h3>
-                                <p className="text-base text-gray-600">Koniec z nieporozumieniami. Wszystkie zadania i plany w jednym miejscu, dostępne w telefonie.</p>
-                            </motion.div>
-                            <motion.div className="bg-white p-8 rounded-2xl shadow-md" variants={itemVariants}>
-                                <h3 className="text-xl font-bold mb-2 text-gray-900">Architektów</h3>
-                                <p className="text-base text-gray-600">Łatwa współpraca i szybkie udostępnianie projektów wszystkim stronom.</p>
-                            </motion.div>
-                        </div>
-                    </div>
-                </motion.section>
-
-                {/* Mobile App Section */}
-                <motion.section 
-                    id="mobile-app" 
-                    className="py-20"
-                    variants={containerVariants}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, amount: 0.2 }}
-                >
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="text-center">
-                            <h2 className="text-3xl font-bold text-gray-900">Pracuj wygodnie z dowolnego miejsca</h2>
-                            <p className="mt-4 text-lg text-gray-600">Dzięki dedykowanej aplikacji mobilnej na iOS i Android.</p>
+                    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="grid md:grid-cols-3 gap-8 items-center">
+                                <div className="md:col-span-1 flex justify-center">
+                                    <Image src="/me.png" alt="Szymon Motyka" width={192} height={192} className="rounded-full" />
+                                </div>
+                            <div className="md:col-span-2">
+                                <h2 className="text-3xl font-bold text-gray-900 mb-4">Cześć, tu Szymon!</h2>
+                                <p className="text-lg text-gray-600">Jestem programistą, nerdem i DevOps-em, który z pasji do rozwiązywania realnych problemów stworzył to narzędzie. Wierzę, że technologia powinna ułatwiać życie, a nie je komplikować. Dlatego PlanBudowlany jest prosty, intuicyjny i skuteczny. Obecnie sam jestem na etapie chaosu budowlanego, co zainspirowało mnie do stworzenia tego produktu.</p>
+                            </div>
                         </div>
                     </div>
                 </motion.section>
@@ -338,7 +305,7 @@ export default function LandingPage() {
                 {/* Mailing List Section */}
                 <motion.section 
                     id="zapisz-sie" 
-                    className="py-20 bg-gray-50"
+                    className="py-20 bg-indigo-700"
                     variants={containerVariants}
                     initial="hidden"
                     whileInView="visible"
@@ -395,7 +362,7 @@ export default function LandingPage() {
                                     disabled={!consent}
                                     className="w-full bg-indigo-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-gray-400 disabled:cursor-not-allowed"
                                 >
-                                    Zapisz mnie!
+                                    Chcę odzyskać spokój
                                 </button>
                             </form>
                             {message && <p className="mt-4 text-center text-green-600">{message}</p>}
@@ -405,12 +372,11 @@ export default function LandingPage() {
                 </motion.section>
             </main>
 
-            {/* Footer */}
-            <footer className="bg-gray-100">
+            <footer className="bg-gray-800 text-white">
                 <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 text-center">
-                    <p className="text-gray-500">&copy; {new Date().getFullYear()} PlanerBudowlany. Wszelkie prawa zastrzeżone.</p>
-                    <p className="text-sm text-gray-400 mt-2">
-                        Projekt stworzony przez <a href="https://lifelike.cloud/" onClick={() => logLinkClick('https://lifelike.cloud/')} target="_blank" rel="noopener noreferrer" className="hover:text-indigo-600 transition-colors">Lifelike</a>
+                    <p className="text-gray-400">&copy; {new Date().getFullYear()} PlanerBudowlany. Wszelkie prawa zastrzeżone.</p>
+                    <p className="text-sm text-gray-500 mt-2">
+                        Projekt stworzony przez <a href="https://lifelike.cloud/" onClick={() => logLinkClick('https://lifelike.cloud/')} target="_blank" rel="noopener noreferrer" className="hover:text-indigo-400 transition-colors">Lifelike</a>
                     </p>
                 </div>
             </footer>
