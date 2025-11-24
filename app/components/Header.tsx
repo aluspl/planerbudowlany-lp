@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Logo from './Logo';
+import ThemeToggle from './ThemeToggle';
 import { logCtaClick } from '../../lib/analytics';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
@@ -13,7 +13,7 @@ const Header = () => {
   return (
     <>
       <motion.header
-        className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm shadow-sm"
+        className="fixed top-0 left-0 right-0 z-50 header-surface backdrop-blur-sm shadow-sm"
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5 }}
@@ -38,6 +38,10 @@ const Header = () => {
                         </svg>
                     </a>
                 </div>
+                <ThemeToggle />
+                <Link href="/demo" onClick={() => logCtaClick('header_see_demo')} className="text-gray-700 hover:text-indigo-600 font-medium">
+                  Demo
+                </Link>
                 <Link
                     href={pathname === '/' ? '/#zapisz-sie' : '/'}
                     onClick={() => logCtaClick('header_get_access')}
@@ -48,14 +52,15 @@ const Header = () => {
             </div>
 
             {/* Mobile Menu Button */}
-            <div className="md:hidden">
-                <Link
-                    href={pathname === '/' ? '/#zapisz-sie' : '/'}
-                    onClick={() => logCtaClick('header_get_access')}
-                    className="bg-indigo-600 text-white font-semibold px-5 py-2 rounded-lg hover:bg-indigo-700 transition-colors duration-300"
-                >
-                    Zapisz się
-                </Link>
+            <div className="md:hidden flex items-center gap-3">
+              <ThemeToggle />
+              <Link
+                href={pathname === '/' ? '/#zapisz-sie' : '/'}
+                onClick={() => logCtaClick('header_get_access')}
+                className="bg-indigo-600 text-white font-semibold px-5 py-2 rounded-lg hover:bg-indigo-700 transition-colors duration-300"
+              >
+                Zapisz się
+              </Link>
             </div>
           </div>
         </div>

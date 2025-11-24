@@ -1,10 +1,17 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, Variants } from 'framer-motion';
 import { addToMailingList } from '../lib/mailingListService';
 import Header from './components/Header';
 import Image from 'next/image';
+import LazyImage from './components/LazyImage';
+const dashboardFull = '/screenshots/dashboard.png';
+const dashboardDark = '/screenshots/dashboard.png';
+const kanban = '/screenshots/kanban.png';
+const kanbanDark = '/screenshots/kanban.png';
+const tasksList = '/screenshots/tasks.png';
+const templates = '/screenshots/onboarding.png';
 import { logCtaClick, logFormSuccess, logLinkClick } from '../lib/analytics';
 
 // Animation definitions for Framer Motion
@@ -87,6 +94,8 @@ export default function LandingPage() {
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
 
+    // removed lightbox interactivity - images are static
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!email || !name) {
@@ -112,6 +121,25 @@ export default function LandingPage() {
         }
     };
 
+        // no lightbox behaviour anymore
+
+        // screenshots fetched from API
+        const [screenshotList, setScreenshotList] = useState<string[]>([]);
+        const [heroImage, setHeroImage] = useState<string>(dashboardFull);
+        useEffect(() => {
+            fetch('/api/screenshots').then(r => r.json()).then((data) => {
+                if (data && data.images) {
+                    // limit to first 6 screenshots
+                    const imgs: string[] = (data.images || []).slice(0, 6);
+                    setScreenshotList(imgs);
+                    // pick hero: prefer filenames with 'dashboard' or 'full' or '8' within the limited set
+                      const findPrefer = (keywords: string[]) => imgs.find(s => keywords.some(k => s.toLowerCase().includes(k)));
+                      const pick = findPrefer(['dashboard', 'full']) || findPrefer(['8']) || imgs[0] || '';
+                    setHeroImage(pick);
+                }
+            }).catch(() => {});
+        }, []);
+
     return (
         <div className="min-h-screen text-gray-800 overflow-x-hidden bg-white">
             <Header />
@@ -127,17 +155,18 @@ export default function LandingPage() {
                         backgroundSize: 'cover',
                         backgroundPosition: 'center center',
                     }}></div>
-                    <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-10 text-center lg:text-left">
                         <motion.h1 
-                            className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl"
+                                className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl"
                             variants={itemVariants}
                             initial="hidden"
                             animate="visible"
                         >
                             Masz dość chaosu na budowie? Odzyskaj kontrolę.
                         </motion.h1>
-                        <motion.p 
-                            className="mt-6 max-w-3xl mx-auto text-lg text-gray-600"
+                            <motion.p 
+                                className="mt-6 max-w-3xl mx-auto lg:mx-0 text-lg text-gray-600"
                             variants={itemVariants}
                             initial="hidden"
                             animate="visible"
@@ -154,6 +183,17 @@ export default function LandingPage() {
                                 Chcę odzyskać spokój
                             </a>
                         </motion.div>
+                        
+                        {/* empty div to keep spacing on small screens */}
+                        <div className="hidden lg:block" />
+                    
+                    {/* Right column: hero screenshot (visible on all sizes) */}
+                    <div className="flex justify-center">
+                        <div className="w-full max-w-[720px] rounded-2xl shadow-2xl overflow-hidden">
+                            <LazyImage src={heroImage} alt="Dashboard preview" width={1280} height={720} className="object-cover w-full h-auto" />
+                        </div>
+                    </div>
+                    </div>
                     </div>
                 </section>
 
@@ -230,6 +270,24 @@ export default function LandingPage() {
                     </div>
                 </section>
 
+                {/* Screenshots Gallery */}
+                <section id="screenshots" className="py-20 bg-gray-50">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="text-center mb-12">
+                            <h2 className="text-3xl font-bold text-gray-900">Galeria ekranu</h2>
+                            <p className="mt-2 text-gray-600">Kilka zrzutów ekranu pokazujących główne widoki aplikacji (jasny i ciemny motyw).</p>
+                        </div>
+
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                                      {screenshotList.filter(s => s !== heroImage).map((src) => (
+                                                        <div key={src} className="rounded-lg overflow-hidden shadow-md">
+                                                            <LazyImage src={src} alt={src} width={1200} height={700} className="w-full h-auto object-cover" />
+                                                        </div>
+                                                    ))}
+                                                </div>
+                    </div>
+                </section>
+
                 {/* tu beda komentarze, po testach mvp
                 <motion.section
                     id="social-proof"
@@ -292,7 +350,7 @@ export default function LandingPage() {
                     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="grid md:grid-cols-3 gap-8 items-center">
                                 <div className="md:col-span-1 flex justify-center">
-                                    <Image src="/me.png" alt="Szymon Motyka" width={192} height={192} className="rounded-full" />
+                                    <LazyImage src="/me.png" alt="Szymon Motyka" width={192} height={192} className="rounded-full" />
                                 </div>
                             <div className="md:col-span-2">
                                 <h2 className="text-3xl font-bold text-gray-900 mb-4">Cześć, tu Szymon!</h2>
@@ -374,10 +432,21 @@ export default function LandingPage() {
 
             <footer className="bg-gray-800 text-white">
                 <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 text-center">
-                    <p className="text-gray-400">&copy; {new Date().getFullYear()} PlanerBudowlany. Wszelkie prawa zastrzeżone.</p>
-                    <p className="text-sm text-gray-500 mt-2">
-                        Projekt stworzony przez <a href="https://lifelike.cloud/" onClick={() => logLinkClick('https://lifelike.cloud/')} target="_blank" rel="noopener noreferrer" className="hover:text-indigo-400 transition-colors">Lifelike</a>
-                    </p>
+                    <div className="flex flex-col md:flex-row items-center justify-center gap-4">
+                        <div className="flex items-center gap-3">
+                            <img src="/favicon.svg" alt="logo" className="h-8 w-8" />
+                            <p className="text-gray-400">&copy; {new Date().getFullYear()} PlanerBudowlany</p>
+                        </div>
+
+                        <div>
+                            <a href="/demo" onClick={() => logLinkClick('/demo')} className="text-indigo-300 hover:text-white font-medium mr-4">Zobacz Demo</a>
+                            <a href="https://planbudowlany.online" onClick={() => logLinkClick('https://planbudowlany.online')} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-indigo-400 transition-colors">Strona główna</a>
+                        </div>
+
+                        <p className="text-sm text-gray-500 mt-2 md:mt-0">
+                            Projekt stworzony przez <a href="https://lifelike.cloud/" onClick={() => logLinkClick('https://lifelike.cloud/')} target="_blank" rel="noopener noreferrer" className="hover:text-indigo-400 transition-colors">Lifelike</a>
+                        </p>
+                    </div>
                 </div>
             </footer>
         </div>

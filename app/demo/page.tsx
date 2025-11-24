@@ -1,8 +1,9 @@
 "use client";
 
+import React from 'react';
 import { motion, Variants } from 'framer-motion';
 import Header from '../components/Header';
-import AppVisualization from '../components/AppVisualization';
+import LazyImage from '../components/LazyImage';
 import Image from 'next/image';
 
 // Animation definitions for Framer Motion
@@ -29,6 +30,12 @@ const itemVariants: Variants = {
 };
 
 export default function DemoPage() {
+    const [screenshots, setScreenshots] = React.useState<string[]>([]);
+    React.useEffect(() => {
+      fetch('/api/screenshots').then(r => r.json()).then((data) => {
+        if (data && data.images) setScreenshots((data.images || []).slice(0,6));
+      }).catch(() => {});
+    }, []);
     return (
         <div className="min-h-screen text-gray-800 overflow-x-hidden bg-white">
             <Header />
@@ -38,16 +45,28 @@ export default function DemoPage() {
                 {/* App Visualization Section */}
                 <section id="visualization" className="py-20">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div className="text-center mb-16">
+                        <div className="text-center mb-8">
                             <h2 className="text-4xl font-bold text-gray-900">Zobacz, jakie to proste</h2>
-                            <p className="mt-4 text-lg text-gray-600">Wszystkie kluczowe funkcje w zasięgu ręki.</p>
+                            <p className="mt-4 text-lg text-gray-600">Kilka zrzutów ekranu ilustrujących kluczowe funkcje aplikacji.</p>
                         </div>
-                        <div className="bg-white rounded-2xl shadow-xl p-4 lg:p-8">
-                            <AppVisualization />
+
+                        <div className="grid gap-8 lg:grid-cols-2 items-start">
+                          <div className="bg-white rounded-2xl shadow-xl p-6">
+                            <h3 className="text-xl font-semibold mb-3">Dashboard projektu</h3>
+                            <p className="text-gray-600 mb-4">Szybki przegląd postępu, budżetu i najważniejszych zadań.</p>
+                            <div className="rounded-lg overflow-hidden">
+                              <LazyImage src={'/screenshots/dashboard.png'} alt="Dashboard" width={1280} height={720} className="w-full h-auto object-cover" />
+                            </div>
+                          </div>
+
+                          <div className="bg-white rounded-2xl shadow-xl p-6">
+                            <h3 className="text-xl font-semibold mb-3">Tablica zadań (Kanban)</h3>
+                            <p className="text-gray-600 mb-4">Przeciągaj zadania między kolumnami, kontroluj statusy i priorytety.</p>
+                            <div className="rounded-lg overflow-hidden">
+                              <LazyImage src={'/screenshots/kanban.png'} alt="Kanban" width={1280} height={720} className="w-full h-auto object-cover" />
+                            </div>
+                          </div>
                         </div>
-                        <p className="text-center text-xs text-gray-500 mt-4">
-                          Uwaga: Finalny wygląd produktu może różnić się od przedstawionych wizualizacji.
-                        </p>
                     </div>
                 </section>
 
@@ -106,34 +125,32 @@ export default function DemoPage() {
                       {/* Kanban Board Mockup */}
                       <motion.div variants={itemVariants} className="bg-white p-6 rounded-2xl shadow-lg">
                         <h3 className="font-bold text-lg text-gray-800 mb-4">Przykładowa tablica zadań</h3>
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                          {/* Column 1 */}
-                          <div>
-                            <h4 className="font-semibold text-sm text-gray-500 mb-3 text-center">Do zrobienia</h4>
-                            <div className="space-y-2">
-                              <div className="bg-gray-100 p-3 rounded-lg text-sm text-gray-700 shadow-sm">Zamówić stal</div>
-                              <div className="bg-gray-100 p-3 rounded-lg text-sm text-gray-700 shadow-sm">Projekt łazienki</div>
-                            </div>
-                          </div>
-                          {/* Column 2 */}
-                          <div>
-                            <h4 className="font-semibold text-sm text-amber-600 mb-3 text-center">W trakcie</h4>
-                            <div className="space-y-2">
-                              <div className="bg-amber-100 p-3 rounded-lg text-sm text-amber-800 shadow-sm">Tynkowanie ścian</div>
-                            </div>
-                          </div>
-                          {/* Column 3 */}
-                          <div>
-                            <h4 className="font-semibold text-sm text-indigo-600 mb-3 text-center">Zrobione</h4>
-                            <div className="space-y-2">
-                              <div className="bg-indigo-100 p-3 rounded-lg text-sm text-indigo-800 line-through shadow-sm">Wylanie fundamentów</div>
-                            </div>
+                        <div className="flex justify-center">
+                          <div className="w-full max-w-[720px] rounded-lg overflow-hidden">
+                            <LazyImage src={'/screenshots/kanban.png'} alt="Kanban view" width={1280} height={720} className="w-full h-auto object-cover" />
                           </div>
                         </div>
                       </motion.div>
                     </div>
                   </div>
                 </motion.section>
+
+                {/* Demo Screenshots Gallery */}
+                <section className="py-12 bg-white">
+                  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="text-center mb-8">
+                      <h3 className="text-2xl font-semibold">Zrzuty ekranu demo</h3>
+                      <p className="text-gray-500 mt-2">Kliknij aby otworzyć obraz w nowej karcie.</p>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {screenshots.map(s => (
+                        <div key={s} className="rounded overflow-hidden shadow-sm">
+                          <LazyImage src={s} alt={s} width={800} height={450} className="w-full h-auto object-cover" />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </section>
 
                 {/* Web Panel Visualization Section */}
                 <motion.section
@@ -152,74 +169,14 @@ export default function DemoPage() {
                       </p>
                     </div>
 
-                    <motion.div
-                      variants={itemVariants}
-                      className="max-w-6xl mx-auto bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden"
-                    >
-                      {/* Browser Header */}
-                      <div className="h-11 bg-gray-100 border-b border-gray-200 flex items-center px-4">
-                        <div className="flex space-x-2">
-                          <div className="w-3 h-3 rounded-full bg-red-400"></div>
-                          <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-                          <div className="w-3 h-3 rounded-full bg-green-400"></div>
-                        </div>
+                    <motion.div variants={itemVariants} className="max-w-6xl mx-auto bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden p-6">
+                      <h3 className="text-lg font-semibold mb-4">Panel klienta - zrzut ekranu</h3>
+                      <p className="text-gray-600 mb-4">Pełny widok panelu klienta z listami projektów, zadaniami i czatem.</p>
+                      <div className="rounded-lg overflow-hidden">
+                        <LazyImage src={'/screenshots/dashboard.png'} alt="Panel klienta" width={1400} height={800} className="w-full h-auto object-cover" />
                       </div>
-
-                      <div className="flex flex-col md:flex-row min-h-[600px]">
-                        {/* Sidebar */}
-                        <div className="w-full md:w-60 bg-gray-50 border-r border-gray-200 p-6">
-                          <h3 className="font-bold text-lg text-gray-800 mb-6">Menu</h3>
-                          <ul className="space-y-3">
-                            <li><a href="#" className="font-semibold text-indigo-600 bg-indigo-100 p-2 rounded-lg flex">Dashboard</a></li>
-                            <li><a href="#" className="text-gray-600 hover:bg-gray-200 p-2 rounded-lg flex">Projekty</a></li>
-                            <li><a href="#" className="text-gray-600 hover:bg-gray-200 p-2 rounded-lg flex">Zadania</a></li>
-                            <li><a href="#" className="text-gray-600 hover:bg-gray-200 p-2 rounded-lg flex">Czat</a></li>
-                            <li><a href="#" className="text-gray-600 hover:bg-gray-200 p-2 rounded-lg flex">Pliki</a></li>
-                            <li><a href="#" className="text-gray-600 hover:bg-gray-200 p-2 rounded-lg flex">Ustawienia</a></li>
-                          </ul>
-                        </div>
-
-                        {/* Main Content */}
-                        <div className="flex-1 p-8">
-                          <h2 className="text-2xl font-bold text-gray-900 mb-6">Dashboard Projektu "Budowa Domu"</h2>
-                          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                            
-                            {/* Gantt Chart Widget */}
-                            <div className="lg:col-span-2 bg-gray-50 p-6 rounded-xl">
-                              <h4 className="font-semibold text-gray-800 mb-4">Oś czasu projektu</h4>
-                              <div className="space-y-3">
-                                <div className="flex items-center gap-4"><p className="w-24 text-sm shrink-0">Fundamenty</p><div className="flex-1 h-5 bg-gray-200 rounded-full"><div className="h-5 bg-indigo-500 rounded-full" style={{width: '100%'}}></div></div></div>
-                                <div className="flex items-center gap-4"><p className="w-24 text-sm shrink-0">Struktura</p><div className="flex-1 h-5 bg-gray-200 rounded-full"><div className="h-5 bg-indigo-500 rounded-full ml-[15%]" style={{width: '85%'}}></div></div></div>
-                                <div className="flex items-center gap-4"><p className="w-24 text-sm shrink-0">Instalacje</p><div className="flex-1 h-5 bg-gray-200 rounded-full"><div className="h-5 bg-amber-500 rounded-full ml-[40%]" style={{width: '60%'}}></div></div></div>
-                              </div>
-                            </div>
-
-                            {/* Checklist Widget */}
-                            <div className="bg-gray-50 p-6 rounded-xl">
-                              <h4 className="font-semibold text-gray-800 mb-4">Moja Checklista</h4>
-                              <ul className="space-y-3">
-                                <li className="flex items-center"><input type="checkbox" defaultChecked className="h-4 w-4 text-indigo-600 rounded" readOnly /> <span className="ml-3 text-sm line-through text-gray-500">Zatwierdzić projekt</span></li>
-                                <li className="flex items-center"><input type="checkbox" defaultChecked className="h-4 w-4 text-indigo-600 rounded" readOnly /> <span className="ml-3 text-sm line-through text-gray-500">Wybrać ekipę</span></li>
-                                <li className="flex items-center"><input type="checkbox" className="h-4 w-4 text-indigo-600 rounded" readOnly /> <span className="ml-3 text-sm text-gray-800">Zamówić materiały</span></li>
-                              </ul>
-                            </div>
-
-                            {/* Chat Widget */}
-                            <div className="lg:col-span-3 bg-gray-50 p-6 rounded-xl">
-                               <h4 className="font-semibold text-gray-800 mb-4">Czat z wykonawcą</h4>
-                               <div className="space-y-3">
-                                <div className="text-sm"><span className="font-bold text-indigo-700">Ty:</span> Cześć, czy mamy już update odnośnie okien?</div>
-                                <div className="text-sm"><span className="font-bold text-amber-700">Jan Murarz:</span> Tak, dzwoniłem. Będą w przyszłym tygodniu we wtorek.</div>
-                               </div>
-                            </div>
-
-                          </div>
-                        </div>
-                      </div>
+                      <p className="text-center text-xs text-gray-500 mt-6">Uwaga: Finalny wygląd produktu może różnić się od przedstawionej wizualizacji.</p>
                     </motion.div>
-                    <p className="text-center text-xs text-gray-500 mt-6">
-                      Uwaga: Finalny wygląd produktu może różnić się od przedstawionej wizualizacji.
-                    </p>
                   </div>
                 </motion.section>
             </main>
