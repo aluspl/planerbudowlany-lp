@@ -42,6 +42,15 @@ const Header = () => {
                 <Link href="/demo" onClick={() => logCtaClick('header_see_demo')} className="text-gray-700 hover:text-indigo-600 font-medium">
                   Demo
                 </Link>
+                <a 
+                    href="https://front.planbudowlany.online" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    onClick={() => logCtaClick('header_try_now')} 
+                    className="bg-green-600 text-white font-semibold px-5 py-2 rounded-lg hover:bg-green-700 transition-colors duration-300"
+                >
+                    Wypróbuj
+                </a>
                 <Link
                     href={pathname === '/' ? '/#zapisz-sie' : '/'}
                     onClick={() => logCtaClick('header_get_access')}

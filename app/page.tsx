@@ -6,6 +6,7 @@ import { addToMailingList } from '../lib/mailingListService';
 import Header from './components/Header';
 import Image from 'next/image';
 import LazyImage from './components/LazyImage';
+import ImageLightbox from './components/ImageLightbox';
 const dashboardFull = '/screenshots/dashboard.png';
 const dashboardDark = '/screenshots/dashboard.png';
 const kanban = '/screenshots/kanban.png';
@@ -93,8 +94,19 @@ export default function LandingPage() {
     const [consent, setConsent] = useState(false);
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
+    
+    // Lightbox state
+    const [lightboxImage, setLightboxImage] = useState<string | null>(null);
+    const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
-    // removed lightbox interactivity - images are static
+    const openLightbox = (src: string) => {
+        setLightboxImage(src);
+        setIsLightboxOpen(true);
+    };
+
+    const closeLightbox = () => {
+        setIsLightboxOpen(false);
+    };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -252,7 +264,7 @@ export default function LandingPage() {
                     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                         <h2 className="text-4xl font-bold text-gray-900">Zobacz Aplikację w Akcji</h2>
                         <motion.div 
-                            className="mt-10 flex justify-center gap-4"
+                            className="mt-10 flex flex-wrap justify-center gap-4"
                             variants={itemVariants}
                             initial="hidden"
                             animate="visible"
@@ -280,7 +292,11 @@ export default function LandingPage() {
 
                                                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                                                       {screenshotList.filter(s => s !== heroImage).map((src) => (
-                                                        <div key={src} className="rounded-lg overflow-hidden shadow-md">
+                                                        <div 
+                                                            key={src} 
+                                                            className="rounded-lg overflow-hidden shadow-md cursor-pointer transition-transform hover:scale-105 duration-300"
+                                                            onClick={() => openLightbox(src)}
+                                                        >
                                                             <LazyImage src={src} alt={src} width={1200} height={700} className="w-full h-auto object-cover" />
                                                         </div>
                                                     ))}
@@ -449,6 +465,16 @@ export default function LandingPage() {
                     </div>
                 </div>
             </footer>
+
+            {/* Image Lightbox */}
+            {lightboxImage && (
+                <ImageLightbox
+                    src={lightboxImage}
+                    alt="Screenshot preview"
+                    isOpen={isLightboxOpen}
+                    onClose={closeLightbox}
+                />
+            )}
         </div>
     );
 }
