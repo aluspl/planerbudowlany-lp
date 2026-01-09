@@ -234,7 +234,7 @@ export default function LandingPage() {
                                         <Image
                                             src={feature.icon}
                                             alt={feature.name}
-                                            layout="fill"
+                                            fill
                                             className="object-cover z-0"
                                         />
                                         <div className="absolute inset-0 bg-black/50 z-10"></div>
