@@ -49,7 +49,7 @@ const Header = () => {
                     onClick={() => logCtaClick('header_try_now')} 
                     className="bg-green-600 text-white font-semibold px-5 py-2 rounded-lg hover:bg-green-700 transition-colors duration-300"
                 >
-                    Wypróbuj
+                    Otwórz Aplikację
                 </a>
                 <Link
                     href={pathname === '/' ? '/#zapisz-sie' : '/'}
